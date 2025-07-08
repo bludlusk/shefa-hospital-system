@@ -10,21 +10,28 @@ import DataTable from '@/components/ui/DataTable';
 import DashboardCharts from '@/components/charts/DashboardCharts';
 import SystemMonitoring from '@/components/dashboard/SystemMonitoring';
 
-// Helper function to generate current dates
-const getCurrentDate = () => {
-  const today = new Date();
-  return today.toISOString().split('T')[0];
-};
+// Define interfaces for type safety
+interface StaffMember {
+  id: string;
+  name: string;
+  role: string;
+  email: string;
+  status: string;
+  department: string;
+  joinDate: string;
+  phone: string;
+}
 
-const getRandomDate = (daysBack: number) => {
-  const today = new Date();
-  const randomDays = Math.floor(Math.random() * daysBack);
-  const date = new Date(today);
-  date.setDate(today.getDate() - randomDays);
-  return date.toISOString().split('T')[0];
-};
+interface Activity {
+  id: number;
+  action: string;
+  user: string;
+  time: string;
+  type: string;
+  icon: React.ReactNode;
+}
 
-const mockStaffData = [
+const mockStaffData: StaffMember[] = [
   {
     id: "ST001",
     name: "Ahmed Hassan",
@@ -87,7 +94,7 @@ const mockStaffData = [
   }
 ];
 
-const recentActivities = [
+const recentActivities: Activity[] = [
   {
     id: 1,
     action: "New patient registered",
@@ -131,7 +138,7 @@ const recentActivities = [
 ];
 
 export default function AdminDashboard() {
-  const { notifications, removeNotification, showSuccess, showError, showWarning, showInfo } = useNotifications();
+  const { notifications, removeNotification, showSuccess, showWarning, showInfo } = useNotifications();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -243,7 +250,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-2xl font-bold">45</div>
-                <div className="text-sm opacity-90">Today's Appointments | مواعيد اليوم</div>
+                <div className="text-sm opacity-90">Today&apos;s Appointments | مواعيد اليوم</div>
               </div>
               <Activity className="h-8 w-8 opacity-80" />
             </div>
@@ -356,7 +363,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* System Monitoring */}
+                {/* System Monitoring */}
         <SystemMonitoring />
 
         {/* Admin Functions */}
@@ -426,8 +433,8 @@ export default function AdminDashboard() {
             { key: 'status', value: 'Inactive', label: 'Inactive' }
           ]}
           onAdd={() => showInfo('Add Staff', 'Opening staff registration form...')}
-          onEdit={(staff: any) => showInfo('Edit Staff', `Editing ${staff.name}'s information`)}
-          onDelete={(staff: any) => showWarning('Delete Staff', `Are you sure you want to remove ${staff.name}?`)}
+          onEdit={(staff: StaffMember) => showInfo('Edit Staff', `Editing ${staff.name}'s information`)}
+          onDelete={(staff: StaffMember) => showWarning('Delete Staff', `Are you sure you want to remove ${staff.name}?`)}
         />
       </div>
 
